@@ -32,8 +32,6 @@
     background-size:200% 200%;
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
-
-    animation:gradientMove 6s ease infinite;
 }
 
 /* Animations */
@@ -70,7 +68,7 @@
     justify-content:center;
     gap:16px;
     flex-wrap:wrap;
-    margin-bottom:35px;
+    margin-bottom:8px;
 }
 
 .ti-form input{
@@ -106,16 +104,25 @@
     box-shadow:none;
 }
 
-/* ================= LOGIN WARNING ================= */
-.login-warning{
-    margin-bottom:20px;
-    color:#dc3545;
-    font-weight:600;
+/* ================= INLINE LOGIN MESSAGE ================= */
+.login-inline{
+    margin-top:12px;
+    font-size:0.95rem;
+    color:#6b7280;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
 }
 
-.login-warning a{
+.login-inline a{
     color:#6a5af9;
+    font-weight:600;
     text-decoration:none;
+}
+
+.login-inline a:hover{
+    text-decoration:underline;
 }
 
 /* ================= RESULT ================= */
@@ -149,28 +156,23 @@
 }
 </style>
 
+<!-- HERO -->
 <h1 class="hero-animate">
     𝕿𝖞𝖕𝖊 𝖞𝖔𝖚𝖗 𝖎𝖒𝖆𝖌𝖎𝖓𝖆𝖙𝖎𝖔𝖓
     <span>Watch it become an image</span>
 </h1>
 
+<!-- CARD -->
 <div class="ti-container">
 
     <h3><i class="fa-solid fa-image"></i> Text to Image Generator</h3>
-
-    <!-- 🔒 LOGIN MESSAGE -->
-    {% if not user.is_authenticated %}
-        <p class="login-warning">
-            🔒 Please login to generate images.
-            <a href="{% url 'signin' %}">Login here</a>
-        </p>
-    {% endif %}
 
     <!-- FORM -->
     <form method="post" class="ti-form">
         {% csrf_token %}
 
-        <input type="text" name="prompt"
+        <input type="text"
+               name="prompt"
                placeholder="Describe the image you want to generate..."
                {% if not user.is_authenticated %}disabled{% endif %}
                required>
@@ -182,8 +184,16 @@
         {% endif %}
     </form>
 
+    <!-- LOGIN MESSAGE -->
+    {% if not user.is_authenticated %}
+    <div class="login-inline">
+        🔒 Please login to generate images.
+        <a href="{% url 'signin' %}">Login here →</a>
+    </div>
+    {% endif %}
+
     <!-- RESULT -->
-    {% if image_url %}
+    {% if user.is_authenticated and image_url %}
     <div class="result-box">
         <h4>✅ Your AI Generated Image</h4>
         <img src="/media/{{ image_url }}" alt="Generated Image">

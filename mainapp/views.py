@@ -170,10 +170,24 @@ def user_logout(request):
 from django.contrib.auth.decorators import login_required
 from .models import PromptHistory
 
-@login_required
+from django.shortcuts import render
+from .models import PromptHistory
+
 def user_history(request):
     search = request.GET.get("search", "")
 
+    # 👇 If user is NOT logged in → show empty history
+    if not request.user.is_authenticated:
+        return render(
+            request,
+            "mainapp/history.html",
+            {
+                "history": [],
+                "search": search
+            }
+        )
+
+    # 👇 If user IS logged in → show their history
     history = PromptHistory.objects.filter(user=request.user)
 
     if search:
