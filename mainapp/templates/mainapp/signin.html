@@ -1,0 +1,138 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .signin-wrapper {
+        min-height: 80vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .signin-card {
+        width: 100%;
+        max-width: 420px;
+        background: #ffffff;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+    }
+
+    .signin-title {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 25px;
+        background: linear-gradient(90deg, #4f46e5, #06b6d4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 700;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 14px;
+        color: #374151;
+        font-weight: 600;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 10px;
+        border: 1px solid #d1d5db;
+        font-size: 15px;
+    }
+
+    input:focus {
+        outline: none;
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 2px rgba(79,70,229,0.2);
+    }
+
+    .signin-btn {
+        width: 100%;
+        margin-top: 10px;
+        padding: 14px;
+        border: none;
+        border-radius: 30px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #fff;
+        cursor: pointer;
+        background: linear-gradient(90deg, #4f46e5, #06b6d4);
+        box-shadow: 0 12px 25px rgba(79,70,229,0.35);
+        transition: all 0.25s ease;
+    }
+
+    .signin-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 18px 35px rgba(79,70,229,0.45);
+    }
+
+    .error-msg {
+        margin-bottom: 15px;
+        padding: 10px;
+        border-radius: 8px;
+        background: #fdecea;
+        color: #b91c1c;
+        text-align: center;
+        font-size: 0.95rem;
+    }
+</style>
+
+<div class="signin-wrapper">
+    <div class="signin-card">
+
+        <div class="signin-title">Sign In</div>
+
+        <!-- 🔔 ERROR MESSAGE -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="error-msg">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="text"
+                       name="phone"
+                       placeholder="Enter your registered phone number"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password"
+                       name="password"
+                       placeholder="Enter your password"
+                       required>
+            </div>
+
+            <button type="submit" class="signin-btn">
+                Sign In
+            </button>
+        </form>
+
+        <p style="text-align:center;margin-top:18px;font-size:0.95rem;">
+            Don’t have an account?
+            <a href="{% url 'register' %}" style="color:#4f46e5;font-weight:600;">
+                Register
+            </a>
+        </p>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,279 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap');
+
+:root {
+    --gradient-primary: linear-gradient(135deg,#667eea,#764ba2);
+    --gradient-secondary: linear-gradient(135deg,#f093fb,#f5576c);
+    --gradient-creative: linear-gradient(135deg,#4facfe,#00f2fe);
+    --gradient-dark: linear-gradient(135deg,#1e3c72,#2a5298);
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    overflow-x:hidden;
+}
+
+/* ================= WRAPPER ================= */
+.about-wrapper{
+    max-width:1200px;
+    margin:80px auto;
+    padding:60px;
+    background:rgba(255,255,255,0.92);
+    backdrop-filter:blur(12px);
+    border-radius:30px;
+    box-shadow:0 25px 50px rgba(102,126,234,0.2);
+}
+
+/* ================= HEADER ================= */
+.about-header{
+    text-align:center;
+    margin-bottom:70px;
+}
+
+.about-header h1{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:3.2rem;
+    background:var(--gradient-primary);
+    -webkit-background-clip:text;
+    color:transparent;
+    animation:glow 3s ease-in-out infinite alternate;
+}
+
+.about-header p{
+    font-size:1.2rem;
+    color:#555;
+    margin-top:10px;
+}
+
+@keyframes glow{
+    from{ text-shadow:0 0 15px rgba(102,126,234,.3) }
+    to{ text-shadow:0 0 30px rgba(102,126,234,.6) }
+}
+
+/* ================= SECTIONS ================= */
+.section{
+    margin-bottom:50px;
+    padding:30px;
+    border-radius:20px;
+    background:rgba(255,255,255,0.85);
+    transition:0.3s;
+}
+
+.section h3{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:1.8rem;
+    margin-bottom:12px;
+}
+
+.section p{
+    font-size:1.05rem;
+    line-height:1.8;
+    color:#555;
+}
+
+/* ================= FEATURES ================= */
+.features{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:25px;
+}
+
+.feature-box{
+    background:#acecee;
+    padding:28px 22px;
+    border-radius:18px;
+    text-align:center;
+    animation:featureFade .8s ease forwards;
+}
+
+.feature-icon{
+    font-size:2.2rem;
+    margin-bottom:12px;
+}
+
+.feature-box h4{
+    font-size:1.3rem;
+    margin-bottom:8px;
+}
+
+/* ================= STATS ================= */
+.stats{
+    margin-top:60px;
+    padding:35px;
+    border-radius:20px;
+    background:var(--gradient-creative);
+    color:#fff;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:25px;
+    text-align:center;
+}
+
+.stat-number{
+    font-size:2.6rem;
+    font-weight:700;
+}
+
+.stat-label{
+    font-size:1rem;
+}
+
+/* ================= VISION ================= */
+.vision-highlight{
+    margin-top:60px;
+    padding:40px;
+    border-radius:25px;
+    background:var(--gradient-dark);
+    color:white;
+}
+
+/* ================= REVEAL ================= */
+.reveal{
+    opacity:0;
+    transform:translateY(40px);
+    transition:1s ease;
+}
+.reveal.active{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* ================= TABLET ================= */
+@media(max-width:768px){
+    .about-wrapper{
+        padding:35px;
+        margin:60px 20px;
+    }
+
+    .about-header h1{
+        font-size:2.4rem;
+    }
+
+    .section h3{
+        font-size:1.6rem;
+    }
+}
+
+/* ================= MOBILE ================= */
+@media(max-width:480px){
+    .about-wrapper{
+        padding:25px;
+        margin:40px 15px;
+        border-radius:20px;
+    }
+
+    .about-header h1{
+        font-size:1.9rem;
+    }
+
+    .about-header p{
+        font-size:1rem;
+    }
+
+    .section{
+        padding:22px;
+    }
+
+    .section p{
+        font-size:0.95rem;
+    }
+
+    .stat-number{
+        font-size:2.2rem;
+    }
+
+    .vision-highlight{
+        padding:28px;
+    }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+    const reveals=document.querySelectorAll(".reveal");
+    const revealOnScroll=()=>{
+        reveals.forEach(el=>{
+            if(el.getBoundingClientRect().top<window.innerHeight*0.85){
+                el.classList.add("active");
+            }
+        });
+    };
+    window.addEventListener("scroll",revealOnScroll);
+    revealOnScroll();
+});
+</script>
+
+<div class="about-wrapper">
+
+    <div class="about-header reveal">
+        <h1>✨ Where Imagination Meets Intelligence</h1>
+        <p>Crafting images & articles from simple words</p>
+    </div>
+
+    <div class="section reveal" style="background:#acecee;">
+        <h3>🎨 Who We Are</h3>
+        <p>
+            We build AI tools that transform text into stunning visuals and
+            meaningful articles, blending creativity with intelligence.
+        </p>
+    </div>
+
+    <div class="section reveal">
+        <h3>🚀 What We Do</h3>
+        <div class="features">
+            <div class="feature-box">
+                <div class="feature-icon">🖼️</div>
+                <h4>Text to Image</h4>
+                <p>Generate stunning AI visuals</p>
+            </div>
+            <div class="feature-box">
+                <div class="feature-icon">📝</div>
+                <h4>Text to Article</h4>
+                <p>Create structured content</p>
+            </div>
+            <div class="feature-box">
+                <div class="feature-icon">⚡</div>
+                <h4>Fast Results</h4>
+                <p>Instant AI output</p>
+            </div>
+            <div class="feature-box">
+                <div class="feature-icon">🎯</div>
+                <h4>User Friendly</h4>
+                <p>Simple & clean interface</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="stats reveal">
+        <div>
+            <div class="stat-number">10K+</div>
+            <div class="stat-label">Images Generated</div>
+        </div>
+        <div>
+            <div class="stat-number">5K+</div>
+            <div class="stat-label">Articles Created</div>
+        </div>
+        <div>
+            <div class="stat-number">99%</div>
+            <div class="stat-label">Satisfaction</div>
+        </div>
+        <div>
+            <div class="stat-number">24/7</div>
+            <div class="stat-label">AI Creativity</div>
+        </div>
+    </div>
+
+    <div class="vision-highlight reveal">
+        <h3>🌟 Our Vision</h3>
+        <p>
+            To empower creators by making AI creativity accessible,
+            fast, and limitless for everyone.
+        </p>
+    </div>
+
+</div>
+{% endblock %}

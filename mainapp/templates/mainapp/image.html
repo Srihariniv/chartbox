@@ -1,0 +1,194 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Poppins:wght@400;500&display=swap');
+
+/* ================= HERO TEXT ================= */
+.hero-animate{
+    text-align:center;
+    font-size:3.2rem;
+    font-weight:700;
+    margin:30px auto 20px;
+    line-height:1.2;
+
+    background:linear-gradient(90deg,#6a5af9,#00c6ff,#6a5af9);
+    background-size:200% 200%;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+    animation:gradientMove 4s ease infinite, fadeUp 0.9s ease;
+}
+
+.hero-animate span{
+    display:block;
+    margin-top:14px;
+    font-family:'Poppins', sans-serif;
+    font-size:1.5rem;
+    font-weight:500;
+
+    background:linear-gradient(90deg,#444,#111,#444);
+    background-size:200% 200%;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+    animation:gradientMove 6s ease infinite;
+}
+
+/* Animations */
+@keyframes gradientMove{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@keyframes fadeUp{
+    from{opacity:0; transform:translateY(20px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+/* ================= CARD ================= */
+.ti-container{
+    max-width:1200px;
+    margin:0 auto 80px;
+    padding:45px;
+    background:#ffffff;
+    border-radius:20px;
+    box-shadow:0 20px 45px rgba(0,0,0,0.12);
+    text-align:center;
+}
+
+.ti-container h3{
+    font-size:2rem;
+    margin-bottom:30px;
+    color:#222;
+}
+
+/* ================= FORM ================= */
+.ti-form{
+    display:flex;
+    justify-content:center;
+    gap:16px;
+    flex-wrap:wrap;
+    margin-bottom:35px;
+}
+
+.ti-form input{
+    width:420px;
+    max-width:100%;
+    padding:14px;
+    border-radius:12px;
+    border:2px solid #ddd;
+    font-size:1rem;
+    outline:none;
+}
+
+.ti-form button{
+    padding:14px 32px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(135deg,#6a5af9,#00c6ff);
+    color:#fff;
+    font-size:1rem;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.ti-form button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 30px rgba(106,90,249,0.4);
+}
+
+.ti-form button:disabled{
+    background:#ccc;
+    cursor:not-allowed;
+    box-shadow:none;
+}
+
+/* ================= LOGIN WARNING ================= */
+.login-warning{
+    margin-bottom:20px;
+    color:#dc3545;
+    font-weight:600;
+}
+
+.login-warning a{
+    color:#6a5af9;
+    text-decoration:none;
+}
+
+/* ================= RESULT ================= */
+.result-box{
+    margin-top:40px;
+    padding-top:30px;
+    border-top:1px dashed #ccc;
+}
+
+.result-box img{
+    width:520px;
+    max-width:100%;
+    border-radius:18px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.2);
+}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:768px){
+    .hero-animate{font-size:2.4rem;}
+    .hero-animate span{font-size:1.3rem;}
+    .ti-container{padding:35px;margin:0 20px 60px;}
+}
+
+@media(max-width:480px){
+    .hero-animate{font-size:1.9rem;}
+    .hero-animate span{font-size:1.1rem;}
+    .ti-container{padding:25px;margin:0 15px 50px;border-radius:16px;}
+    .ti-container h3{font-size:1.5rem;}
+    .ti-form{flex-direction:column;gap:14px;}
+    .ti-form input,.ti-form button{width:100%;}
+}
+</style>
+
+<h1 class="hero-animate">
+    𝕿𝖞𝖕𝖊 𝖞𝖔𝖚𝖗 𝖎𝖒𝖆𝖌𝖎𝖓𝖆𝖙𝖎𝖔𝖓
+    <span>Watch it become an image</span>
+</h1>
+
+<div class="ti-container">
+
+    <h3><i class="fa-solid fa-image"></i> Text to Image Generator</h3>
+
+    <!-- 🔒 LOGIN MESSAGE -->
+    {% if not user.is_authenticated %}
+        <p class="login-warning">
+            🔒 Please login to generate images.
+            <a href="{% url 'signin' %}">Login here</a>
+        </p>
+    {% endif %}
+
+    <!-- FORM -->
+    <form method="post" class="ti-form">
+        {% csrf_token %}
+
+        <input type="text" name="prompt"
+               placeholder="Describe the image you want to generate..."
+               {% if not user.is_authenticated %}disabled{% endif %}
+               required>
+
+        {% if user.is_authenticated %}
+            <button type="submit">✨ Generate Image</button>
+        {% else %}
+            <button type="button" disabled>🔒 Login to Generate</button>
+        {% endif %}
+    </form>
+
+    <!-- RESULT -->
+    {% if image_url %}
+    <div class="result-box">
+        <h4>✅ Your AI Generated Image</h4>
+        <img src="/media/{{ image_url }}" alt="Generated Image">
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

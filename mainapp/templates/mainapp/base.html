@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ConvertAI</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    background:#f4f6f8;
+}
+
+/* ===== NAVBAR ===== */
+.navbar{
+    width:100%;
+    padding:16px 20px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(14px);
+    border-bottom:1px solid rgba(255,255,255,0.25);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+/* LOGO */
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#fff;
+    font-size:1.5rem;
+    font-weight:700;
+    text-decoration:none;
+}
+.logo i{color:#ffd86f}
+
+/* LINKS */
+.nav-links{
+    display:flex;
+    list-style:none;
+    gap:26px;
+}
+
+.nav-links a{
+    color:#fff;
+    text-decoration:none;
+    font-weight:600;
+}
+
+/* ACTIONS */
+.nav-actions{
+    display:flex;
+    gap:12px;
+    align-items:center;
+}
+
+.btn{
+    padding:9px 16px;
+    border-radius:10px;
+    border:none;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.btn-login{
+    background:transparent;
+    color:#fff;
+    border:1px solid rgba(255,255,255,0.6);
+}
+
+.btn-start{
+    background:linear-gradient(90deg,#ff9a9e,#fad0c4);
+    color:#2c2c2c;
+}
+
+/* PROFILE */
+.profile-menu{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#fff;
+    font-weight:600;
+}
+
+.profile-icon{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:#ffd86f;
+    color:#2c2c2c;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+}
+
+/* ===== HAMBURGER ===== */
+.hamburger{
+    display:none;
+    flex-direction:column;
+    gap:5px;
+    cursor:pointer;
+}
+
+.hamburger span{
+    width:26px;
+    height:3px;
+    background:#fff;
+    border-radius:2px;
+}
+
+/* ===== PAGE ===== */
+.page{
+    min-height:100vh;
+    padding:20px;
+}
+
+/* ===== MOBILE VIEW ===== */
+@media(max-width:768px){
+
+    .hamburger{display:flex}
+
+    .nav-links,
+    .nav-actions{
+        position:absolute;
+        top:100%;
+        left:0;
+        width:100%;
+        background:linear-gradient(135deg,#667eea,#764ba2);
+        flex-direction:column;
+        align-items:center;
+        gap:20px;
+        padding:25px 0;
+        display:none;
+    }
+
+    .nav-links.active,
+    .nav-actions.active{
+        display:flex;
+    }
+
+    .nav-links a{
+        font-size:1.1rem;
+    }
+
+    .btn{
+        width:85%;
+        max-width:300px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div style="background:linear-gradient(135deg,#667eea,#764ba2);">
+<nav class="navbar">
+
+    <a href="{% url 'home' %}" class="logo">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        Word 2 World
+    </a>
+
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <ul class="nav-links" id="navLinks">
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'image' %}">Text to Image</a></li>
+        <li><a href="{% url 'article' %}">Image to Article</a></li>
+        <li><a href="{% url 'about' %}">About</a></li>
+        <li><a href="{% url 'history'%}">View search history</a>
+        </li>
+    </ul>
+
+    <div class="nav-actions" id="navActions">
+        {% if user.is_authenticated %}
+            <div class="profile-menu">
+                <div class="profile-icon">
+                    {{ user.profile.name|first|upper }}
+                </div>
+                {{ user.profile.name }}
+            </div>
+
+            <a href="{% url 'logout' %}">
+                <button class="btn btn-login">Logout</button>
+            </a>
+        {% else %}
+            <a href="{% url 'signin' %}">
+                <button class="btn btn-login">Sign In</button>
+            </a>
+            <a href="{% url 'register' %}">
+                <button class="btn btn-start">Register</button>
+            </a>
+        {% endif %}
+    </div>
+
+</nav>
+</div>
+
+<div class="page">
+    {% block content %}{% endblock %}
+</div>
+
+<script>
+const hamburger = document.getElementById("hamburger");
+const navLinks = document.getElementById("navLinks");
+const navActions = document.getElementById("navActions");
+
+hamburger.addEventListener("click", ()=>{
+    navLinks.classList.toggle("active");
+    navActions.classList.toggle("active");
+});
+</script>
+
+</body>
+</html>
